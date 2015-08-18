@@ -1,6 +1,6 @@
 import os, string, codecs
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 
@@ -40,28 +40,45 @@ for subdir, dirs, files in os.walk(eastTrainDir):
 
 sw = stopwords.words("english")
 
-
-countVec = CountVectorizer()
+countVec = CountVectorizer(analyzer="word", stop_words=sw)
 trainCount = countVec.fit_transform(lyrics)
 
-tfidfTransformer = TfidfTransformer().fit(trainCount)
-tfidfTrain = tfidfTransformer.transform(trainCount)
+#tfidfTransformer = TfidfTransformer().fit(trainCount)
+#tfidfTrain = tfidfTransformer.transform(trainCount)
 
-classifier = MultinomialNB().fit(tfidfTrain, coast)
+#classifier = MultinomialNB().fit(tfidfTrain, coast)
+classifier = MultinomialNB(alpha=.5).fit(trainCount, coast)
 
 for subdir, dirs, files in os.walk(westTestDir):
 	for f in files:
 		print f
+		temp = ""
 		pth = os.path.join(subdir, f)
-		testSet.append(open(pth).read())
+		fileLyrics = open(pth).read().decode('utf-8')
+		fileLyrics = fileLyrics.replace(string.punctuation, "")
+		for i in fileLyrics.split(" "):
+			temp += stemmer.stem(i) + " "
+		#testSet.append(temp)
+		tempCount = countVec.transform([temp])
+		predicted = classifier.predict(tempCount)
+		print predicted
 for subdir, dirs, files in os.walk(eastTestDir):
 	for f in files:
 		print f
+		temp = ""
 		pth = os.path.join(subdir, f)
-		testSet.append(open(pth).read())
+		fileLyrics = open(pth).read().decode('utf-8')
+		fileLyrics = fileLyrics.replace(string.punctuation, "")
+		for i in fileLyrics.split(" "):
+			temp += stemmer.stem(i) + " "
+		#testSet.append(temp)
+		tempCount = countVec.transform([temp])
+		predicted = classifier.predict(tempCount)
+		print predicted
 
 testCount = countVec.transform(testSet)
-tfidfTest = tfidfTransformer.transform(testCount)
+#tfidfTest = tfidfTransformer.transform(testCount)
 
-predicted = classifier.predict(tfidfTest)
-print predicted
+#predicted = classifier.predict(tfidfTest)
+#predicted = classifier.predict(testCount)
+#print predicted
