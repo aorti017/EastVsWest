@@ -67,4 +67,4 @@ for subdir, dirs, files in os.walk(eastTestDir):
 
 testCount = countVec.transform(testSet)
 predicted = classifier.predict(testCount)
-print "Accuracy: " + str(accuracy_score(predicted, ['W', 'W', 'W', 'W',  'W',  'W',  'W',  'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E']))
+print "Accuracy: " + str(accuracy_score(predicted, ['W', 'W', 'W', 'W', 'E', 'E', 'E', 'E']))
