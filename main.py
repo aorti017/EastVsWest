@@ -48,7 +48,6 @@ classifier = MultinomialNB(alpha=.5).fit(trainCount, coast)
 
 for subdir, dirs, files in os.walk(westTestDir):
 	for f in files:
-		print f
 		temp = ""
 		pth = os.path.join(subdir, f)
 		fileLyrics = open(pth).read().decode('utf-8')
@@ -58,7 +57,6 @@ for subdir, dirs, files in os.walk(westTestDir):
 		testSet.append(temp)
 for subdir, dirs, files in os.walk(eastTestDir):
 	for f in files:
-		print f
 		temp = ""
 		pth = os.path.join(subdir, f)
 		fileLyrics = open(pth).read().decode('utf-8')
@@ -69,4 +67,4 @@ for subdir, dirs, files in os.walk(eastTestDir):
 
 testCount = countVec.transform(testSet)
 predicted = classifier.predict(testCount)
-print "Accuracy: " + str(accuracy_score(predicted, ['W', 'W ', 'W', 'W ',  'W ',  'W ',  'W ',  'W ', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E']))
+print "Accuracy: " + str(accuracy_score(predicted, ['W', 'W', 'W', 'W',  'W',  'W',  'W',  'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E']))
