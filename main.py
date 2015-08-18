@@ -13,6 +13,7 @@ eastTestDir = "./res/test/east"
 lyrics = []
 coast = []
 testSet = []
+predTest = []
 
 stemmer = SnowballStemmer("english")
 
@@ -49,25 +50,27 @@ classifier = MultinomialNB(alpha=.5).fit(trainCount, coast)
 for subdir, dirs, files in os.walk(westTestDir):
 	for f in files:
 		temp = ""
-		print f
+		#print f
 		pth = os.path.join(subdir, f)
 		fileLyrics = open(pth).read().decode('utf-8')
 		fileLyrics = fileLyrics.replace(string.punctuation, "")
 		for i in fileLyrics.split(" "):
 			temp += stemmer.stem(i) + " "
 		testSet.append(temp)
+		predTest.append('W')
 for subdir, dirs, files in os.walk(eastTestDir):
 	for f in files:
 		temp = ""
-		print f
+		#print f
 		pth = os.path.join(subdir, f)
 		fileLyrics = open(pth).read().decode('utf-8')
 		fileLyrics = fileLyrics.replace(string.punctuation, "")
 		for i in fileLyrics.split(" "):
 			temp += stemmer.stem(i) + " "
 		testSet.append(temp)
+		predTest.append('E')
 
 testCount = countVec.transform(testSet)
 predicted = classifier.predict(testCount)
-print predicted
-print "Accuracy: " + str(accuracy_score(predicted, ['W', 'W', 'W', 'W', 'E', 'E', 'E', 'E']))
+#print predicted
+print "Accuracy: " + str(accuracy_score(predicted, predTest))
