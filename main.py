@@ -41,7 +41,7 @@ for subdir, dirs, files in os.walk(eastTrainDir):
 
 sw = stopwords.words("english")
 
-countVec = CountVectorizer(analyzer="word", stop_words=sw)
+countVec = CountVectorizer(stop_words=sw)
 trainCount = countVec.fit_transform(lyrics)
 
 classifier = MultinomialNB(alpha=.5).fit(trainCount, coast)
